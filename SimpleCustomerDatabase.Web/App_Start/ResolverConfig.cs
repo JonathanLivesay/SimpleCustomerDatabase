@@ -11,6 +11,7 @@ using SimpleCustomerDatabase.Domain;
 using Highway.Data;
 using SimpleCustomerDatabase.Web.Persistence;
 using System.Configuration;
+using System.Data.Entity;
 
 
 namespace SimpleCustomerDatabase.Web.App_Start 
@@ -21,6 +22,9 @@ namespace SimpleCustomerDatabase.Web.App_Start
 
         public static void Register()
         {
+
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DataContext>());
+
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(ResolverConfig).Assembly);
             builder.Register<SimpleCustomerDatabase.Domain.Customer>(c => instance);
