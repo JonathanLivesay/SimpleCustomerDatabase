@@ -12,6 +12,10 @@
         background-color: #efefef;
     }
 
+
+
+
+
 </style>
 
 <h2 class="text-center">Simple Customer Database List</h2>
@@ -26,6 +30,15 @@
 
 
 <div class="row show-for-medium-up">
+    <style>
+        .button.tiny{
+        padding-top: 0.400rem;
+        padding-right: 1.00rem;
+        padding-bottom: 0.400rem;
+        padding-left: 1.00rem;
+        margin: 0;
+        }
+    </style>
     <table class="columns medium-12 ">
         <thead>
             <tr>
@@ -59,27 +72,29 @@
 </div>
 
 <div class="show-for-small-only">
+
     <div>
-        <div class="row">
+        
             @foreach (var customer1 in Model.Customers)
             {
                 <div class="panel radius">
-                    <div>
-                        <p style="float:right">
-                            @Html.ActionLink("Details", "Details", "Customer", new { id = customer1.Id }, new { @class = "tiny radius button" })
-                        </p>
-                    </div>
-                    <div>
-                    <h2>@customer1.FirstName @customer1.LastName</h2>
-                    <h3>@customer1.CompanyName</h3>
-                    <h4>@customer1.PhoneNumber</h4>
-                    <h4>@customer1.Email</h4>
+                    <div class="row">
+                        <div class="small-7 column">
+                            <h2>@customer1.FirstName @customer1.LastName</h2>
+                            <h3>@customer1.CompanyName</h3>
+                            <h4>@customer1.PhoneNumber</h4>
+                            <h4>@customer1.Email</h4>
+                        </div>
+                        <div class="small-5 column">
+                            <p>
+                                @Html.ActionLink("Details", "Details", "Customer", new { id = customer1.Id }, new { @class = "small radius button" })
+                            </p>
+                        </div>
                     </div>
                 </div>
-                
             }
 
-        </div>
+                
     </div>
 </div>
 
