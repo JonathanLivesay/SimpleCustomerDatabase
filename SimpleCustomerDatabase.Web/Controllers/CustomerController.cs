@@ -13,27 +13,27 @@ namespace SimpleCustomerDatabase.Web.Controllers
     [Authorize]
     public class CustomerController : Controller
     {
-        private IRepository repo;
+        private IRepository _repo;
 
         public CustomerController(IRepository repo)
         {
-            this.repo = repo;
+            this._repo = repo;
         }
         
         // GET: Customer
 
         public ActionResult Index()
         {
-            var customerModel = new CustomerModels();
+            var customerModel = new CustomerModel();
             
-            customerModel.Customers = repo.Find(new FindAll<Customer>()).ToList();
+            customerModel.Customers = _repo.Find(new FindAll<Customer>()).ToList();
 
             if (customerModel.Customers.Count == 0)
             {
                 return RedirectToAction("First");
             } 
                
-            repo.Context.Commit();
+            _repo.Context.Commit();
             
             return View(customerModel);
         }
@@ -42,7 +42,7 @@ namespace SimpleCustomerDatabase.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            Customer customer = repo.Find(new FindById(id));
+            Customer customer = _repo.Find(new FindById(id));
 
             return View("Details", customer);
         }
@@ -60,9 +60,9 @@ namespace SimpleCustomerDatabase.Web.Controllers
         public ActionResult Create(Customer customer)
         {
 
-            repo.Context.Add<Customer>(customer);
+            _repo.Context.Add<Customer>(customer);
 
-            repo.Context.Commit();
+            _repo.Context.Commit();
 
             return RedirectToAction("Index", "Customer");
         }
@@ -71,7 +71,7 @@ namespace SimpleCustomerDatabase.Web.Controllers
         [HttpGet]
         public ActionResult EditGet(int id)
         {
-            Customer customer = repo.Find(new FindById(id));
+            Customer customer = _repo.Find(new FindById(id));
 
             return View("Edit", customer);
 
@@ -83,7 +83,7 @@ namespace SimpleCustomerDatabase.Web.Controllers
         public ActionResult Edit(int id, Customer customer)
         {
 
-            Customer originalCustomer = repo.Find(new FindById(id));
+            Customer originalCustomer = _repo.Find(new FindById(id));
 
             originalCustomer.FirstName = customer.FirstName;
             originalCustomer.LastName = customer.LastName;
@@ -96,7 +96,7 @@ namespace SimpleCustomerDatabase.Web.Controllers
             originalCustomer.CompanyState = customer.CompanyState;
             originalCustomer.CompanyPostalCode = customer.CompanyPostalCode;
 
-            repo.Context.Commit();
+            _repo.Context.Commit();
 
             return RedirectToAction("Details", originalCustomer);
 
@@ -116,7 +116,7 @@ namespace SimpleCustomerDatabase.Web.Controllers
         [HttpGet]
         public ActionResult DeleteConfirm(int id)
         {
-            var customer = repo.Find(new FindById(id));
+            var customer = _repo.Find(new FindById(id));
 
             return View("Delete", customer);
         }
@@ -125,11 +125,11 @@ namespace SimpleCustomerDatabase.Web.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var customer = repo.Find(new FindById(id));
+            var customer = _repo.Find(new FindById(id));
 
-            repo.Context.Remove(customer);
+            _repo.Context.Remove(customer);
             
-            repo.Context.Commit();
+            _repo.Context.Commit();
 
             return RedirectToAction("Index");
             

@@ -10,6 +10,7 @@ using SimpleCustomerDatabase.Web.Controllers;
 using SimpleCustomerDatabase.Domain;
 using Highway.Data;
 using SimpleCustomerDatabase.Web.Persistence;
+using SimpleCustomerDatabase.Web.Models;
 using System.Configuration;
 using System.Data.Entity;
 
@@ -18,7 +19,7 @@ namespace SimpleCustomerDatabase.Web.App_Start
 {
     public class ResolverConfig
     {
-        public static Customer instance;
+        public static CustomerModel instance;
 
         public static void Register()
         {
@@ -27,13 +28,14 @@ namespace SimpleCustomerDatabase.Web.App_Start
 
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(ResolverConfig).Assembly);
-            builder.Register<SimpleCustomerDatabase.Domain.Customer>(c => instance);
+            //builder.RegisterType<CustomerModel>();
             builder.Register<IRepository>(cc => new Repository(cc.Resolve<IDataContext>()));
-            builder.Register<IMappingConfiguration>(cc => new MappingConfig());
-            builder.Register<IDataContext>(cc => new DataContext(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, cc.Resolve<IMappingConfiguration>()));
+            builder.RegisterType<MappingConfig>().AsImplementedInterfaces();
+            //builder.Register<IMappingConfiguration>(cc => new MappingConfig());
+            //builder.Register<IDataContext>(cc => new DataContext(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, cc.Resolve<IMappingConfiguration>()));
+            builder.RegisterType<DataContext>().AsImplementedInterfaces().WithParameter(new NamedParameter("connectionString", ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString));
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-
         }
     }
 }

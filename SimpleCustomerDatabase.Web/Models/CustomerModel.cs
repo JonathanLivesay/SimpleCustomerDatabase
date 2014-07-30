@@ -8,7 +8,7 @@ using Highway.Data;
 
 namespace SimpleCustomerDatabase.Web.Models
 {
-    public class CustomerModels
+    public class CustomerModel
     {
 
         private List<Customer> customers;

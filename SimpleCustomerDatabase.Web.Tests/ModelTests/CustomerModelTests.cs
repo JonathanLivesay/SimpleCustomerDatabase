@@ -14,7 +14,7 @@ namespace SimpleCustomerDatabase.Web.Tests.ModelTests
     class CustomerModelTests
     {
 
-        private CustomerModels customerModel;
+        private CustomerModel customerModel;
         private List<Customer> customers;
         private Customer customer;
 
